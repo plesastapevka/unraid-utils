@@ -47,5 +47,5 @@ def main():
 
     print("Hard links created: " + str(counter))
 
-
-main()
+if __name__ == "__main__":
+    main()
