@@ -1,6 +1,6 @@
 import os
 import glob
-
+import re
 
 def main():
     # Get a list of all files in the current directory
@@ -9,7 +9,8 @@ def main():
     # Iterate over the files
     for file in files:
         # Replace spaces in the file name with dots
-        new_name = file.replace(" ", ".").replace("-", "")
+        name = file.replace(" ", ".").replace("-", "")
+        new_name = re.sub(r'(?<=\d)\.(?=E)', '', name)
         # Rename the file
         os.rename(file, new_name)
 
