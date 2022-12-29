@@ -59,7 +59,7 @@ def delete_file(file, interactive=False):
         os.remove(file)
         return True
 
-    if yes_or_no(f"Delete folder {file}"):
+    if os.path.isdir(file) and yes_or_no(f"Delete folder {file}"):
         shutil.rmtree(file)
         return True
 
