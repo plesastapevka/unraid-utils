@@ -11,6 +11,7 @@ For each script, make sure to be in the repository's root directory when running
 - [Hardlinker](guides/hardlinker.md): `hardlinker.py`
 - [Tdarr x-referencer](guides/tdarr_xref.md): `tdarr_xref.py`
 - [Filename cleaner](guides/cleaner.md): `cleaner.py`
+- [Duplicate checker](guides/dupe_check.md): `dupe_check.py`
 
 ## Future ideas:
 - [ ] Create a WebUI for the scripts

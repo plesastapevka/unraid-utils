@@ -11,7 +11,7 @@ def main():
     for file in files:
         # Replace spaces and dashes in the file name with dots
         name = file.replace(" ", ".").replace("-", "")
-        new_name = re.sub(r'(?<=\d)\.(?=E)', '', name)
+        new_name = re.sub(r'(?<=\d)[^A-Za-z\d]+(?=E)', '', name)
         # Rename the file
         os.rename(file, new_name)
 
