@@ -34,7 +34,7 @@ e.g. newly added show called "Besa" is located in
 To create hardlinks in desired folder e.g. `/mnt/user/plex/shows/Besa/`, the folder should be empty. Corresponding directories such as `Season 1` etc. will be created automatically.
 
 1. First of all install the required packages with `pip install -r requirements.txt`.
-2. Run `python3 hardlinker.py /mnt/user/plex/downloads/Besa.S01-S02/ /mnt/user/plex/shows/Besa/`.
+2. Run `python main.py /mnt/user/plex/downloads/Besa.S01-S02/ /mnt/user/plex/shows/Besa/`.
 3. The script will indicate the link it will create. Type `y` and hit enter, or just hit enter to accept the link or type `n` and hit enter to reject the link. 
 4. That's pretty much it. The file struture in the newly linked folder should look something like this:
 
