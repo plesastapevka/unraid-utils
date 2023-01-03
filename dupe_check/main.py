@@ -4,6 +4,7 @@ import sys
 import os
 import uuid
 import datetime
+import re
 
 
 def yes_no(question):
@@ -18,6 +19,28 @@ def yes_no(question):
         return yes_no("Uhhhh... please enter ")
 
 
+def detect_season(torrent):
+    if not "excess" in torrent:
+        return torrent
+    season_indices = [i for i, item in enumerate(torrent["excess"]) if re.search('S[0-9]+$', item)]
+    if "excess" in torrent and season_indices:
+        season = torrent["excess"][season_indices[0]]
+        if len(season) > 3:
+            return torrent
+        else:
+            torrent["season"] = int((torrent["excess"][season_indices[0]])[1:].strip("0"))
+            return torrent
+    if "excess" in torrent and "season" in torrent["excess"]:
+        torrent["season"] = int(torrent["excess"][torrent["excess"].index("season")+1])
+    if "excess" in torrent and "Season" in torrent["excess"]:
+        torrent["season"] = int(torrent["excess"][torrent["excess"].index("Season")+1])
+    if "excess" in torrent and "SEASON" in torrent["excess"]:
+        torrent["season"] = int(torrent["excess"][torrent["excess"].index("SEASON")+1])
+
+
+    return torrent
+
+
 def check_dupes(path, force=False, dry=False):
     files = [(f, uuid.uuid4(), os.path.getmtime(path + "/" + f)) for f in os.listdir(path)]
     print("Detecting dupes: ")
@@ -28,15 +51,20 @@ def check_dupes(path, force=False, dry=False):
         includes_season = True if (
                 ("excess" in torrent) and ("Season" in torrent or "season" in torrent["excess"] or "Season" in
                                            torrent["excess"] or "SEASON" in torrent["excess"])) else False
+
+        torrent = detect_season(torrent)
+
         show = True if "season" in torrent or includes_season else False
 
         for duplicate_file in files:
             dupe = PTN.parse(duplicate_file[0])
+            dupe = detect_season(dupe)
             # checks if uuids are the same
             if duplicate_file[1] != torrent_file[1] and dupe["title"] == torrent["title"]:
                 includes_episode = True if "episode" in dupe and "episode" in torrent else False
-                if (show and includes_episode and dupe["episode"] != torrent["episode"]) or (
-                        show and not includes_episode):
+                if show and includes_episode and dupe["episode"] != torrent["episode"]:
+                    continue 
+                if "season" in dupe and "season" in torrent and dupe["season"] != torrent["season"]:
                     continue
                 if "year" in torrent and "year" in dupe and torrent["year"] != dupe["year"]:
                     continue
